@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 
 export const SettingsPanel: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const { settings, updateSettings, toggleSettings, setTheme } = useAppStore();
   
   // 确保 localSettings 始终有初始值
@@ -80,7 +82,7 @@ export const SettingsPanel: React.FC = () => {
         </div>
         <div className="flex items-center justify-center py-12">
           <div className="text-center text-[var(--text-secondary)]">
-            <p>加载设置中...</p>
+            <p>{t('settings.loading')}</p>
           </div>
         </div>
       </div>
@@ -108,7 +110,7 @@ export const SettingsPanel: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">设置</h2>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('settings.title')}</h2>
         </div>
         <button
           onClick={toggleSettings}
@@ -121,21 +123,46 @@ export const SettingsPanel: React.FC = () => {
       </div>
 
       <div className="space-y-6">
+        {/* Language Selection */}
+        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 border border-[var(--border-color)] shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+            <label className="text-sm font-semibold text-[var(--text-primary)]">{t('settings.language')}</label>
+          </div>
+          <select
+            value={i18n.language}
+            onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
+            }}
+            className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent transition-all shadow-sm"
+          >
+            <option value="zh">🇨🇳 简体中文</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+          </select>
+        </div>
+
         {/* AI Provider Selection */}
         <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            <label className="text-sm font-semibold text-[var(--text-primary)]">默认 AI Provider</label>
+            <label className="text-sm font-semibold text-[var(--text-primary)]">{t('settings.defaultProvider')}</label>
           </div>
           <select
             value={localSettings.defaultProvider}
             onChange={(e) => setLocalSettings({ ...localSettings, defaultProvider: e.target.value as 'poe' | 'ollama' })}
             className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent transition-all shadow-sm"
           >
-            <option value="poe">🌐 Poe (云端)</option>
-            <option value="ollama">💻 Ollama (本地)</option>
+            <option value="poe">🌐 {t('settings.poeCloud')}</option>
+            <option value="ollama">💻 {t('settings.ollamaLocal')}</option>
           </select>
         </div>
 
@@ -149,7 +176,7 @@ export const SettingsPanel: React.FC = () => {
                   <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-lg text-[var(--text-primary)]">Poe 配置</h3>
+              <h3 className="font-semibold text-lg text-[var(--text-primary)]">{t('settings.poeConfig')}</h3>
             </div>
             
             <div className="space-y-4">
@@ -165,12 +192,12 @@ export const SettingsPanel: React.FC = () => {
                     )}
                     className="w-5 h-5 rounded border-2 border-[var(--border-color)] text-blue-500 focus:ring-2 focus:ring-blue-500"
                   />
-                  <span className="text-sm font-medium">启用 Poe</span>
+                  <span className="text-sm font-medium">{t('settings.enablePoe')}</span>
                 </label>
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">API Key</label>
+                <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">{t('settings.apiKey')}</label>
                 <div className="relative">
                   <input
                     type="password"
@@ -180,7 +207,7 @@ export const SettingsPanel: React.FC = () => {
                       'poeApiKey',
                       e.target.value
                     )}
-                    placeholder="输入 Poe API Key"
+                    placeholder={t('settings.apiKeyPlaceholder')}
                     className="w-full px-4 py-3 pl-11 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   />
                   <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,7 +228,7 @@ export const SettingsPanel: React.FC = () => {
                   <path fillRule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-lg text-[var(--text-primary)]">Ollama 配置</h3>
+              <h3 className="font-semibold text-lg text-[var(--text-primary)]">{t('settings.ollamaConfig')}</h3>
             </div>
             
             <div className="space-y-4">
@@ -217,12 +244,12 @@ export const SettingsPanel: React.FC = () => {
                     )}
                     className="w-5 h-5 rounded border-2 border-[var(--border-color)] text-purple-500 focus:ring-2 focus:ring-purple-500"
                   />
-                  <span className="text-sm font-medium">启用 Ollama</span>
+                  <span className="text-sm font-medium">{t('settings.enableOllama')}</span>
                 </label>
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">服务器地址</label>
+                <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">{t('settings.serverAddress')}</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -250,14 +277,14 @@ export const SettingsPanel: React.FC = () => {
             <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
             </svg>
-            <label className="text-sm font-semibold text-[var(--text-primary)]">默认模型</label>
+            <label className="text-sm font-semibold text-[var(--text-primary)]">{t('settings.defaultModel')}</label>
           </div>
           <select
             value={localSettings.defaultModel}
             onChange={(e) => setLocalSettings({ ...localSettings, defaultModel: e.target.value })}
             className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all shadow-sm"
           >
-            <optgroup label="☁️ Poe 模型">
+            <optgroup label={`☁️ ${t('settings.poeModels')}`}>
               <option value="Claude-Sonnet-4.5">⭐ Claude-Sonnet-4.5 (推荐 - 200k)</option>
               <option value="GPT-5-Chat">🚀 GPT-5-Chat (400k)</option>
               <option value="Claude-3-Sonnet">Claude-3-Sonnet (200k)</option>
@@ -265,7 +292,7 @@ export const SettingsPanel: React.FC = () => {
               <option value="Claude-3.5-Sonnet">Claude-3.5-Sonnet (200k)</option>
               <option value="GPT-4-Turbo">GPT-4-Turbo (128k)</option>
             </optgroup>
-            <optgroup label="💻 Ollama 模型">
+            <optgroup label={`💻 ${t('settings.ollamaModels')}`}>
               <option value="llama2">🦙 llama2</option>
               <option value="mistral">🌪️ mistral</option>
               <option value="deepseek-r1:8b">🔍 deepseek-r1:8b</option>
@@ -289,7 +316,7 @@ export const SettingsPanel: React.FC = () => {
               <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
-              <label className="text-sm font-semibold text-[var(--text-primary)]">主题</label>
+              <label className="text-sm font-semibold text-[var(--text-primary)]">{t('settings.theme')}</label>
             </div>
             <select
               value={localSettings.theme}
@@ -300,8 +327,8 @@ export const SettingsPanel: React.FC = () => {
               }}
               className="w-full px-4 py-3 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm"
             >
-              <option value="light">☀️ 浅色</option>
-              <option value="dark">🌙 深色</option>
+              <option value="light">☀️ {t('settings.light')}</option>
+              <option value="dark">🌙 {t('settings.dark')}</option>
             </select>
           </div>
 
@@ -311,7 +338,7 @@ export const SettingsPanel: React.FC = () => {
               <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
               </svg>
-              <label className="text-sm font-semibold text-[var(--text-primary)]">自动保存</label>
+              <label className="text-sm font-semibold text-[var(--text-primary)]">{t('settings.autoSave')}</label>
             </div>
             <label className="flex items-center gap-3 p-3 rounded-xl hover:bg-[var(--bg-hover)] transition-colors cursor-pointer">
               <input
@@ -320,12 +347,12 @@ export const SettingsPanel: React.FC = () => {
                 onChange={(e) => setLocalSettings({ ...localSettings, autoSave: e.target.checked })}
                 className="w-5 h-5 rounded border-2 border-[var(--border-color)] text-green-500 focus:ring-2 focus:ring-green-500"
               />
-              <span className="text-sm font-medium">启用自动保存</span>
+              <span className="text-sm font-medium">{t('settings.enableAutoSave')}</span>
             </label>
             {localSettings.autoSave && (
               <div className="mt-4">
                 <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">
-                  保存延迟: {localSettings.autoSaveDelay}ms
+                  {t('settings.saveDelay')}: {localSettings.autoSaveDelay}ms
                 </label>
                 <input
                   type="range"
@@ -354,7 +381,7 @@ export const SettingsPanel: React.FC = () => {
                   <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-lg text-[var(--text-primary)]">语音识别服务</h3>
+              <h3 className="font-semibold text-lg text-[var(--text-primary)]">{t('settings.sttService')}</h3>
             </div>
             <button
               onClick={async () => {
@@ -388,7 +415,7 @@ export const SettingsPanel: React.FC = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
-              <span>重连 STT</span>
+              <span>{t('settings.reconnectSTT')}</span>
             </button>
           </div>
           <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
@@ -409,19 +436,19 @@ export const SettingsPanel: React.FC = () => {
                 <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
               </svg>
             </div>
-            <h3 className="font-semibold text-lg text-[var(--text-primary)]">数据库设置</h3>
+            <h3 className="font-semibold text-lg text-[var(--text-primary)]">{t('settings.databaseSettings')}</h3>
           </div>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">数据库路径</label>
+              <label className="block text-sm font-medium mb-2 text-[var(--text-secondary)]">{t('settings.databasePath')}</label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <input
                     type="text"
                     value={localSettings.databasePath || ''}
                     onChange={(e) => setLocalSettings({ ...localSettings, databasePath: e.target.value })}
-                    placeholder="留空使用默认路径"
+                    placeholder={t('settings.databasePathPlaceholder')}
                     className="w-full px-4 py-3 pl-11 rounded-xl bg-[var(--bg-primary)] border-2 border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                   />
                   <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -449,7 +476,7 @@ export const SettingsPanel: React.FC = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
-                  <span>选择</span>
+                  <span>{t('settings.selectFolder')}</span>
                 </button>
               </div>
               <div className="mt-3 space-y-2">
@@ -481,21 +508,21 @@ export const SettingsPanel: React.FC = () => {
                 }}
                 className="text-xs px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors font-medium"
               >
-                查看默认路径
+                {t('settings.viewDefaultPath')}
               </button>
               <button
                 onClick={async () => {
                   const { invoke } = await import('@tauri-apps/api/core');
                   try {
                     const currentPath = await invoke<string>('get_current_db_path');
-                    alert(`当前路径：\n${currentPath}`);
+                    alert(t('settings.currentPathResult', { path: currentPath }));
                   } catch (error) {
-                    alert(`获取当前路径失败：${error}`);
+                    alert(t('settings.getPathFailed', { error: String(error) }));
                   }
                 }}
                 className="text-xs px-3 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors font-medium"
               >
-                查看当前路径
+                {t('settings.viewCurrentPath')}
               </button>
             </div>
           </div>
@@ -513,7 +540,7 @@ export const SettingsPanel: React.FC = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
           </svg>
-          <span>备份管理</span>
+          <span>{t('settings.backupManagement')}</span>
         </button>
         <button
           onClick={handleSave}
@@ -522,7 +549,7 @@ export const SettingsPanel: React.FC = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>保存设置</span>
+          <span>{t('settings.saveSettings')}</span>
         </button>
         <button
           onClick={async () => {
@@ -543,7 +570,7 @@ export const SettingsPanel: React.FC = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          <span>重置</span>
+          <span>{t('settings.resetSettings')}</span>
         </button>
         <button
           onClick={toggleSettings}
@@ -552,7 +579,7 @@ export const SettingsPanel: React.FC = () => {
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-          <span>取消</span>
+          <span>{t('common.cancel')}</span>
         </button>
       </div>
     </div>

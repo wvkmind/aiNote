@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Mic, Square, Send } from 'lucide-react';
 import { aiService } from '../services/ai/AIService';
 import { useAppStore } from '../store/useAppStore';
@@ -9,6 +10,7 @@ interface VoiceInputProps {
 }
 
 export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, mode = 'insert' }) => {
+  const { t } = useTranslation();
   const [isRecording, setIsRecording] = useState(false);
   const [partialText, setPartialText] = useState('');
   const [isOptimizing, setIsOptimizing] = useState(false);
@@ -53,7 +55,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, mode = 'in
         if (!isConnected && ws.readyState !== WebSocket.OPEN) {
           console.error('⏱️ STT 服务连接超时');
           ws.close();
-          setErrorMessage('语音识别服务连接超时，请确保服务已启动');
+          setErrorMessage(t('voice.connectionTimeout'));
           setTimeout(() => setErrorMessage(''), 5000);
           setIsRecording(false);
           if (recordingTimerRef.current) {
@@ -159,7 +161,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, mode = 'in
 
       ws.onerror = (error) => {
         console.error('WebSocket 错误:', error);
-        setErrorMessage('语音识别服务连接失败，请确保服务已启动');
+        setErrorMessage(t('voice.connectionFailed'));
         setTimeout(() => setErrorMessage(''), 5000);
         setIsRecording(false);
         if (recordingTimerRef.current) {
@@ -175,7 +177,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript, mode = 'in
       
     } catch (error) {
       console.error('启动录音失败:', error);
-      setErrorMessage('无法访问麦克风，请检查权限设置');
+      setErrorMessage(t('voice.microphoneError'));
       setTimeout(() => setErrorMessage(''), 5000);
       setIsRecording(false);
       if (recordingTimerRef.current) {
@@ -300,12 +302,12 @@ ${rawText}`;
         }`}
         title={
           isOptimizing
-            ? 'AI 正在优化文字...'
+            ? t('voice.optimizing')
             : isRecording 
-            ? '点击停止录音' 
+            ? t('voice.clickToStop')
             : isSendMode
-            ? '语音输入到聊天框'
-            : '语音输入到光标位置'
+            ? t('voice.voiceToChat')
+            : t('voice.voiceToCursor')
         }
       >
         {isOptimizing ? (
@@ -327,7 +329,7 @@ ${rawText}`;
         <div className={`absolute bottom-full mb-3 ${bubblePosition} bg-gradient-to-r from-red-600 to-red-500 text-white text-sm px-4 py-2.5 rounded-2xl shadow-xl z-50 animate-fade-in`}>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            <span>录音中 {recordingDuration}s</span>
+            <span>{t('voice.recording')} {recordingDuration}s</span>
           </div>
           <div className={`absolute -bottom-1 ${trianglePosition} w-3 h-3 bg-red-500 transform rotate-45`}></div>
         </div>
@@ -357,7 +359,7 @@ ${rawText}`;
               <div className="animate-spin h-3 w-3 border-2 border-white border-t-transparent rounded-full"></div>
             </div>
             <div className="flex-1 leading-relaxed">
-              AI 正在优化文字...
+              {t('voice.optimizing')}
             </div>
           </div>
           {/* 小三角 */}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { TipTapEditor } from './TipTapEditor';
 import { ErrorBoundary } from './ErrorBoundary';
@@ -10,6 +11,7 @@ import { VersionHistoryPanel } from './VersionHistoryPanel';
 import { WelcomePage } from './WelcomePage';
 
 export const EditorPanel: React.FC = () => {
+  const { t } = useTranslation();
   const { currentDocument, toggleSidebar, toggleSettings, toggleTags, toggleTodos, tagsOpen, todosOpen, loadTags, settings, closeDocument, sttStatus } = useAppStore();
   const [localTitle, setLocalTitle] = React.useState('');
   const [showSummaryPanel, setShowSummaryPanel] = React.useState(false);
@@ -156,7 +158,7 @@ export const EditorPanel: React.FC = () => {
           <button
             onClick={toggleSidebar}
             className="p-2 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-            title="切换侧边栏"
+            title={t('editorPanel.toggleSidebar')}
           >
             <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -169,24 +171,24 @@ export const EditorPanel: React.FC = () => {
                 value={localTitle}
                 onChange={handleTitleChange}
                 className="text-lg font-semibold bg-transparent border-none outline-none focus:ring-2 focus:ring-[var(--accent-primary)] rounded-lg px-3 py-1.5 min-w-[300px] text-[var(--text-primary)]"
-                placeholder="文档标题"
+                placeholder={t('editorPanel.documentTitle')}
               />
               {isSaving ? (
                 <span className="text-xs font-medium text-amber-600 flex items-center gap-2 px-3 py-1.5 bg-amber-50 rounded-full shadow-sm">
                   <span className="inline-block w-2 h-2 bg-amber-600 rounded-full animate-pulse"></span>
-                  保存中...
+                  {t('editorPanel.saving')}
                 </span>
               ) : hasUnsavedChanges ? (
                 <span className="text-xs font-medium text-orange-600 flex items-center gap-2 px-3 py-1.5 bg-orange-50 rounded-full shadow-sm">
                   <span className="inline-block w-2 h-2 bg-orange-600 rounded-full"></span>
-                  未保存
+                  {t('editorPanel.unsaved')}
                 </span>
               ) : lastSavedTime ? (
                 <span className="text-xs font-medium text-emerald-600 flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full shadow-sm">
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  已保存
+                  {t('editorPanel.saved')}
                 </span>
               ) : null}
               <button
@@ -199,7 +201,7 @@ export const EditorPanel: React.FC = () => {
                   }, 100);
                 }}
                 className="p-2 hover:bg-[var(--bg-hover)] rounded-lg transition-all"
-                title="关闭文档"
+                title={t('editorPanel.closeDocument')}
               >
                 <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -207,7 +209,7 @@ export const EditorPanel: React.FC = () => {
               </button>
             </div>
           ) : (
-            <span className="text-lg font-semibold text-[var(--text-secondary)] px-3">AI 笔记系统</span>
+            <span className="text-lg font-semibold text-[var(--text-secondary)] px-3">{t('editorPanel.appTitle')}</span>
           )}
         </div>
         
@@ -217,7 +219,7 @@ export const EditorPanel: React.FC = () => {
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
                 className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-                title="导出文档"
+                title={t('editorPanel.exportDocument')}
               >
                 <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -244,7 +246,7 @@ export const EditorPanel: React.FC = () => {
                       <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
-                      <span>Markdown (.md)</span>
+                      <span>{t('editorPanel.exportMarkdown')}</span>
                     </button>
                     <button
                       onClick={async () => {
@@ -259,7 +261,7 @@ export const EditorPanel: React.FC = () => {
                       <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <span>纯文本 (.txt)</span>
+                      <span>{t('editorPanel.exportText')}</span>
                     </button>
                     <button
                       onClick={async () => {
@@ -274,7 +276,7 @@ export const EditorPanel: React.FC = () => {
                       <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                       </svg>
-                      <span>JSON (.json)</span>
+                      <span>{t('editorPanel.exportJSON')}</span>
                     </button>
                   </div>
                 </>
@@ -288,7 +290,7 @@ export const EditorPanel: React.FC = () => {
                 console.log('设置状态为 true');
               }}
               className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm text-xl"
-              title="清除上下文（插入分隔符）"
+              title={t('editorPanel.clearContext')}
             >
               🧹
             </button>
@@ -296,7 +298,7 @@ export const EditorPanel: React.FC = () => {
               <button
                 onClick={() => setShowVersionHistory(true)}
                 className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-                title="版本历史"
+                title={t('editorPanel.versionHistory')}
               >
                 <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -306,7 +308,7 @@ export const EditorPanel: React.FC = () => {
             <button
               onClick={toggleTodos}
               className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-              title="当前文档待办"
+              title={t('editorPanel.currentDocTodos')}
             >
               <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -315,7 +317,7 @@ export const EditorPanel: React.FC = () => {
             <button
               onClick={toggleTags}
               className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-              title="当前文档标签"
+              title={t('editorPanel.currentDocTags')}
             >
               <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z" />
@@ -324,7 +326,7 @@ export const EditorPanel: React.FC = () => {
             <button
               onClick={toggleSettings}
               className="p-2.5 hover:bg-[var(--bg-hover)] rounded-lg transition-all hover:shadow-sm"
-              title="设置"
+              title={t('editorPanel.settings')}
             >
               <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -393,7 +395,7 @@ export const EditorPanel: React.FC = () => {
           <>
             <div className="flex items-center gap-5 text-xs text-[var(--text-secondary)] flex-1">
               {/* STT 服务状态 */}
-              <span className="flex items-center gap-1.5" title={sttStatus === 'connected' ? 'STT 服务已连接' : sttStatus === 'disconnected' ? 'STT 服务未连接' : '检查中...'}>
+              <span className="flex items-center gap-1.5" title={sttStatus === 'connected' ? t('editorPanel.sttConnected') : sttStatus === 'disconnected' ? t('editorPanel.sttDisconnected') : t('editorPanel.sttChecking')}>
                 <span className={`w-2 h-2 rounded-full ${sttStatus === 'connected' ? 'bg-green-500' : sttStatus === 'disconnected' ? 'bg-red-500' : 'bg-gray-400'}`}></span>
                 <span className={sttStatus === 'connected' ? 'text-green-600' : sttStatus === 'disconnected' ? 'text-red-600' : ''}>
                   STT
@@ -401,7 +403,7 @@ export const EditorPanel: React.FC = () => {
               </span>
               <span>•</span>
               <span>
-                更新时间: {new Date(currentDocument.updatedAt < 10000000000 ? currentDocument.updatedAt * 1000 : currentDocument.updatedAt).toLocaleString('zh-CN')}
+                {t('editorPanel.updateTime')}: {new Date(currentDocument.updatedAt < 10000000000 ? currentDocument.updatedAt * 1000 : currentDocument.updatedAt).toLocaleString()}
               </span>
               <span>•</span>
               <span className={(() => {
@@ -411,7 +413,7 @@ export const EditorPanel: React.FC = () => {
                 if (size > 1 * 1024 * 1024) return 'text-yellow-600';
                 return '';
               })()}>
-                大小: {(() => {
+                {t('editorPanel.size')}: {(() => {
                   const size = JSON.stringify(currentDocument.content).length;
                   if (size < 1024) return `${size}B`;
                   if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)}KB`;
@@ -421,12 +423,12 @@ export const EditorPanel: React.FC = () => {
               
               <span>•</span>
               <span>
-                上下文: {(contextLength / 1000).toFixed(1)}k 字符
+                {t('editorPanel.context')}: {(contextLength / 1000).toFixed(1)}k {t('common.characters', { defaultValue: '字符' })}
               </span>
               <span>•</span>
               <div className="flex items-center gap-2">
                 <span>
-                  模型: {settings.defaultModel}
+                  {t('editorPanel.model')}: {settings.defaultModel}
                 </span>
                 <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -510,17 +512,17 @@ export const EditorPanel: React.FC = () => {
           <>
             <div className="flex items-center gap-5 text-xs text-[var(--text-secondary)]">
               {/* STT 服务状态 */}
-              <span className="flex items-center gap-1.5" title={sttStatus === 'connected' ? 'STT 服务已连接' : sttStatus === 'disconnected' ? 'STT 服务未连接' : '检查中...'}>
+              <span className="flex items-center gap-1.5" title={sttStatus === 'connected' ? t('editorPanel.sttConnected') : sttStatus === 'disconnected' ? t('editorPanel.sttDisconnected') : t('editorPanel.sttChecking')}>
                 <span className={`w-2 h-2 rounded-full ${sttStatus === 'connected' ? 'bg-green-500' : sttStatus === 'disconnected' ? 'bg-red-500' : 'bg-gray-400'}`}></span>
                 <span className={sttStatus === 'connected' ? 'text-green-600' : sttStatus === 'disconnected' ? 'text-red-600' : ''}>
                   STT
                 </span>
               </span>
               <span>•</span>
-              <span>未选择文档</span>
+              <span>{t('editorPanel.noDocumentSelected')}</span>
             </div>
             <div className="text-xs text-[var(--text-secondary)]">
-              就绪
+              {t('editorPanel.ready')}
             </div>
           </>
         )}
@@ -536,19 +538,17 @@ export const EditorPanel: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-[var(--text-primary)]">清除上下文</h3>
+              <h3 className="text-xl font-bold text-[var(--text-primary)]">{t('editorPanel.clearContextTitle')}</h3>
             </div>
             <p className="text-sm text-[var(--text-secondary)] mb-6 leading-relaxed">
-              确定要清除上下文吗？
-              <br /><br />
-              这将在当前位置插入一个分隔符，之后的 AI 对话将不会使用此分隔符之前的内容作为上下文。
+              {t('editorPanel.clearContextMessage')}
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowClearContextConfirm(false)}
                 className="px-5 py-2.5 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-xl hover:bg-[var(--bg-hover)] transition-all font-medium shadow-sm hover:shadow"
               >
-                取消
+                {t('common.cancel')}
               </button>
               <button
                 onClick={() => {
@@ -557,7 +557,7 @@ export const EditorPanel: React.FC = () => {
                 }}
                 className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all font-medium shadow-md hover:shadow-lg"
               >
-                确定
+                {t('editorPanel.confirm')}
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { JSONContent } from '@tiptap/react';
 
@@ -12,6 +13,7 @@ interface TodoItem {
 }
 
 export const TodoPanel: React.FC = () => {
+  const { t } = useTranslation();
   const { documents, selectDocument, updateDocument, currentDocument } = useAppStore();
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
@@ -38,7 +40,7 @@ export const TodoPanel: React.FC = () => {
                   id: `${docId}-${globalPosition}-${index}`,
                   documentId: docId,
                   documentTitle: docTitle,
-                  text: text || '(空待办)',
+                  text: text || t('todo.emptyTodo'),
                   checked,
                   position: globalPosition,
                 });
@@ -160,15 +162,15 @@ export const TodoPanel: React.FC = () => {
       <div className="p-6 border-b border-[var(--border-color)]">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold text-[var(--text-primary)]">待办事项</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">{t('todo.title')}</h2>
             <p className="text-xs text-[var(--text-tertiary)] mt-1">
-              {currentDocument ? `当前文档：${currentDocument.title}` : '全局待办'}
+              {currentDocument ? `${t('todo.currentDoc')}：${currentDocument.title}` : t('todo.globalTodos')}
             </p>
           </div>
           <button
             onClick={() => useAppStore.getState().toggleTodos()}
             className="p-2 hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
-            title="关闭"
+            title={t('todo.close')}
           >
             <svg className="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -180,15 +182,15 @@ export const TodoPanel: React.FC = () => {
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-3 text-center">
             <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
-            <div className="text-xs text-blue-600 mt-1">总计</div>
+            <div className="text-xs text-blue-600 mt-1">{t('todo.total')}</div>
           </div>
           <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-3 text-center">
             <div className="text-2xl font-bold text-orange-600">{stats.active}</div>
-            <div className="text-xs text-orange-600 mt-1">进行中</div>
+            <div className="text-xs text-orange-600 mt-1">{t('todo.active')}</div>
           </div>
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-3 text-center">
             <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
-            <div className="text-xs text-green-600 mt-1">已完成</div>
+            <div className="text-xs text-green-600 mt-1">{t('todo.completed')}</div>
           </div>
         </div>
 
@@ -202,7 +204,7 @@ export const TodoPanel: React.FC = () => {
                 : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
             }`}
           >
-            全部
+            {t('todo.all')}
           </button>
           <button
             onClick={() => setFilter('active')}
@@ -212,7 +214,7 @@ export const TodoPanel: React.FC = () => {
                 : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
             }`}
           >
-            进行中
+            {t('todo.active')}
           </button>
           <button
             onClick={() => setFilter('completed')}
@@ -222,7 +224,7 @@ export const TodoPanel: React.FC = () => {
                 : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
             }`}
           >
-            已完成
+            {t('todo.completed')}
           </button>
         </div>
       </div>
@@ -235,9 +237,9 @@ export const TodoPanel: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
             <p className="text-[var(--text-secondary)] text-sm">
-              {filter === 'all' && '暂无待办事项'}
-              {filter === 'active' && '没有进行中的待办'}
-              {filter === 'completed' && '没有已完成的待办'}
+              {filter === 'all' && t('todo.noTodos')}
+              {filter === 'active' && t('todo.noActiveTodos')}
+              {filter === 'completed' && t('todo.noCompletedTodos')}
             </p>
           </div>
         ) : (

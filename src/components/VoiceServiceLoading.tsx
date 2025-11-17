@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useVoiceService } from '../hooks/useVoiceService';
 
 interface VoiceServiceLoadingProps {
@@ -6,6 +7,7 @@ interface VoiceServiceLoadingProps {
 }
 
 export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ children }) => {
+  const { t } = useTranslation();
   const { status, retryCount } = useVoiceService();
 
   // 开发模式下不显示 loading
@@ -34,14 +36,14 @@ export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ childr
 
             {/* 标题 */}
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              {status === 'checking' ? '初始化中...' : '启动语音识别'}
+              {status === 'checking' ? t('voice.initializing') : t('voice.startingSTT')}
             </h2>
             
             {/* 描述 */}
             <p className="text-gray-600 text-center mb-6">
               {status === 'checking' 
-                ? '正在检查语音服务状态...' 
-                : '首次启动需要加载模型，请稍候...'}
+                ? t('voice.checkingStatus')
+                : t('voice.loadingModel')}
             </p>
 
             {/* 进度条 */}
@@ -63,7 +65,7 @@ export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ childr
             {retryCount > 15 && (
               <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-xs text-yellow-800 text-center">
-                  ⏳ 加载时间较长，请耐心等待...
+                  {t('voice.loadingLong')}
                 </p>
               </div>
             )}
@@ -85,18 +87,18 @@ export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ childr
             </div>
             
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              语音服务启动超时
+              {t('voice.serviceTimeout')}
             </h2>
             
             <p className="text-gray-600 text-center mb-6">
-              语音识别功能暂时不可用，但您仍可以正常使用其他功能。
+              {t('voice.serviceTimeoutDesc')}
             </p>
             
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
-              重新加载
+              {t('voice.reload')}
             </button>
           </div>
         </div>
@@ -116,11 +118,11 @@ export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ childr
             </div>
             
             <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              语音服务启动失败
+              {t('voice.serviceFailed')}
             </h2>
             
             <p className="text-gray-600 text-center mb-6">
-              无法启动语音识别服务，但您仍可以正常使用其他功能。
+              {t('voice.serviceFailedDesc')}
             </p>
             
             <div className="flex gap-3">
@@ -128,13 +130,13 @@ export const VoiceServiceLoading: React.FC<VoiceServiceLoadingProps> = ({ childr
                 onClick={() => window.location.reload()}
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
               >
-                重试
+                {t('voice.retry')}
               </button>
               <button
                 onClick={() => window.location.href = '/'}
                 className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
               >
-                继续使用
+                {t('voice.continue')}
               </button>
             </div>
           </div>

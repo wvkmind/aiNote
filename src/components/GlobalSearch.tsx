@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 
 interface SearchResult {
@@ -9,11 +10,12 @@ interface SearchResult {
 }
 
 export const GlobalSearch: React.FC = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const { documents, selectDocument, searchDocuments } = useAppStore();
+  const { selectDocument, searchDocuments } = useAppStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const searchTimeoutRef = useRef<number | null>(null);
 
@@ -44,6 +46,7 @@ export const GlobalSearch: React.FC = () => {
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
+      setIsSearching(false);
       return;
     }
 
@@ -58,6 +61,7 @@ export const GlobalSearch: React.FC = () => {
         await searchDocuments(query);
         
         // 处理搜索结果，提取匹配片段
+        const documents = useAppStore.getState().documents;
         const searchResults: SearchResult[] = documents.map(doc => {
           const lowerQuery = query.toLowerCase();
           const lowerTitle = doc.title.toLowerCase();
@@ -111,7 +115,7 @@ export const GlobalSearch: React.FC = () => {
         clearTimeout(searchTimeoutRef.current);
       }
     };
-  }, [query, documents, searchDocuments]);
+  }, [query, searchDocuments]);
 
   const extractTextFromContent = (content: any): string => {
     if (!content) return '';
@@ -159,12 +163,12 @@ export const GlobalSearch: React.FC = () => {
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] transition-all text-sm text-[var(--text-secondary)]"
-        title="全局搜索 (Ctrl+K)"
+        title={`${t('common.search')} (Ctrl+K)`}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <span>搜索</span>
+        <span>{t('common.search')}</span>
         <kbd className="px-2 py-0.5 bg-[var(--bg-secondary)] rounded text-xs">Ctrl+K</kbd>
       </button>
     );
@@ -191,7 +195,7 @@ export const GlobalSearch: React.FC = () => {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="搜索文档标题和内容..."
+              placeholder={t('sidebar.searchPlaceholder')}
               className="flex-1 bg-transparent outline-none text-lg text-[var(--text-primary)] placeholder-[var(--text-tertiary)]"
             />
             {isSearching && (
@@ -217,7 +221,7 @@ export const GlobalSearch: React.FC = () => {
                 <svg className="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p>没有找到匹配的文档</p>
+                <p>{t('sidebar.noResults')}</p>
               </div>
             )}
             
@@ -226,8 +230,8 @@ export const GlobalSearch: React.FC = () => {
                 <svg className="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <p>输入关键词搜索文档</p>
-                <p className="text-xs mt-2">支持搜索标题和内容</p>
+                <p>{t('sidebar.searchPrompt')}</p>
+                <p className="text-xs mt-2">{t('sidebar.searchSupport')}</p>
               </div>
             )}
 
@@ -267,7 +271,7 @@ export const GlobalSearch: React.FC = () => {
                           ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                           : 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
                       }`}>
-                        {result.matchType === 'title' ? '标题匹配' : '内容匹配'}
+                        {result.matchType === 'title' ? t('sidebar.titleMatch') : t('sidebar.contentMatch')}
                       </span>
                     </div>
                   </div>
@@ -282,19 +286,19 @@ export const GlobalSearch: React.FC = () => {
           {/* 底部提示 */}
           {results.length > 0 && (
             <div className="px-4 py-3 bg-[var(--bg-secondary)] border-t border-[var(--border-color)] flex items-center justify-between text-xs text-[var(--text-tertiary)]">
-              <span>找到 {results.length} 个结果</span>
+              <span>{t('sidebar.resultsFound', { count: results.length })}</span>
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
                   <kbd className="px-2 py-0.5 bg-[var(--bg-tertiary)] rounded">↑↓</kbd>
-                  导航
+                  {t('sidebar.navigate')}
                 </span>
                 <span className="flex items-center gap-1">
                   <kbd className="px-2 py-0.5 bg-[var(--bg-tertiary)] rounded">Enter</kbd>
-                  打开
+                  {t('sidebar.open')}
                 </span>
                 <span className="flex items-center gap-1">
                   <kbd className="px-2 py-0.5 bg-[var(--bg-tertiary)] rounded">Esc</kbd>
-                  关闭
+                  {t('common.close')}
                 </span>
               </div>
             </div>

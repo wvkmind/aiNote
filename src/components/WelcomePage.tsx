@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 
 export const WelcomePage: React.FC = () => {
+  const { t } = useTranslation();
   const { documents, createDocument, toggleTodos, toggleSettings, folders } = useAppStore();
   const [showFolderSelect, setShowFolderSelect] = React.useState(false);
   const [showNameInput, setShowNameInput] = React.useState(false);
@@ -9,7 +11,7 @@ export const WelcomePage: React.FC = () => {
   const [selectedFolderId, setSelectedFolderId] = React.useState<string | undefined>();
 
   const handleCreateDocument = async () => {
-    const title = documentName.trim() || `新文档 ${new Date().toLocaleString('zh-CN')}`;
+    const title = documentName.trim() || `${t('editor.newDocumentTitle')} ${new Date().toLocaleString()}`;
     await createDocument(title, selectedFolderId);
     setShowFolderSelect(false);
     setShowNameInput(false);
@@ -51,10 +53,10 @@ export const WelcomePage: React.FC = () => {
             </svg>
           </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-            欢迎使用 AI 笔记
+            {t('welcome.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            智能笔记系统，让创作更高效
+            {t('welcome.subtitle')}
           </p>
         </div>
 
@@ -69,8 +71,8 @@ export const WelcomePage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">新建文档</h3>
-            <p className="text-sm text-gray-600">创建一个新的笔记文档</p>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{t('welcome.newDocument')}</h3>
+            <p className="text-sm text-gray-600">{t('welcome.newDocumentDesc')}</p>
           </button>
 
           <button
@@ -82,8 +84,8 @@ export const WelcomePage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">全局待办</h3>
-            <p className="text-sm text-gray-600">查看所有待办事项</p>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{t('welcome.globalTodos')}</h3>
+            <p className="text-sm text-gray-600">{t('welcome.globalTodosDesc')}</p>
           </button>
 
           <button
@@ -96,8 +98,8 @@ export const WelcomePage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">系统设置</h3>
-            <p className="text-sm text-gray-600">配置 AI 和主题</p>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{t('welcome.systemSettings')}</h3>
+            <p className="text-sm text-gray-600">{t('welcome.systemSettingsDesc')}</p>
           </button>
         </div>
 
@@ -108,7 +110,7 @@ export const WelcomePage: React.FC = () => {
               <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h2 className="text-2xl font-bold text-gray-800">最近文档</h2>
+              <h2 className="text-2xl font-bold text-gray-800">{t('welcome.recentDocuments')}</h2>
             </div>
             <div className="space-y-3">
               {recentDocuments.map(doc => (
@@ -127,7 +129,7 @@ export const WelcomePage: React.FC = () => {
                       {doc.title}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      {new Date(doc.updatedAt < 10000000000 ? doc.updatedAt * 1000 : doc.updatedAt).toLocaleString('zh-CN')}
+                      {new Date(doc.updatedAt < 10000000000 ? doc.updatedAt * 1000 : doc.updatedAt).toLocaleString()}
                     </p>
                   </div>
                   <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +144,7 @@ export const WelcomePage: React.FC = () => {
         {/* 提示信息 */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
-            💡 提示：从左侧边栏选择或创建文档开始使用
+            {t('welcome.tip')}
           </p>
         </div>
       </div>
@@ -151,7 +153,7 @@ export const WelcomePage: React.FC = () => {
       {showNameInput && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">新建文档</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t('welcome.newDocumentTitle')}</h3>
             <input
               type="text"
               value={documentName}
@@ -163,7 +165,7 @@ export const WelcomePage: React.FC = () => {
                   setDocumentName('');
                 }
               }}
-              placeholder="请输入文档名称（可选）"
+              placeholder={t('welcome.documentNamePlaceholder')}
               className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none mb-6 text-gray-800"
               autoFocus
             />
@@ -175,13 +177,13 @@ export const WelcomePage: React.FC = () => {
                 }}
                 className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
               >
-                取消
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleNameSubmit}
                 className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors font-medium"
               >
-                下一步
+                {t('common.next')}
               </button>
             </div>
           </div>
@@ -192,7 +194,7 @@ export const WelcomePage: React.FC = () => {
       {showFolderSelect && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">选择文件夹</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-4">{t('welcome.selectFolder')}</h3>
             <div className="space-y-2 max-h-96 overflow-y-auto mb-6">
               <button
                 onClick={() => handleFolderSelect()}
@@ -201,7 +203,7 @@ export const WelcomePage: React.FC = () => {
                 <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                 </svg>
-                <span className="font-medium text-gray-800">根目录</span>
+                <span className="font-medium text-gray-800">{t('sidebar.root')}</span>
               </button>
               {folders.map(folder => (
                 <button
@@ -223,7 +225,7 @@ export const WelcomePage: React.FC = () => {
               }}
               className="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium"
             >
-              取消
+              {t('common.cancel')}
             </button>
           </div>
         </div>

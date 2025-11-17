@@ -2,6 +2,19 @@
 
 一个本地优先的笔记软件，集成 Poe API 和 Ollama，支持与 AI 边聊天边写笔记。
 
+## 🌍 多语言支持
+
+本应用支持以下语言：
+- 🇨🇳 简体中文
+- 🇺🇸 English
+- 🇯🇵 日本語
+- 🇰🇷 한국어
+- 🇪🇸 Español
+- 🇫🇷 Français
+- 🇩🇪 Deutsch
+
+**切换语言：** 打开设置 → 选择语言下拉菜单 → 选择您想要的语言
+
 ## 🚀 快速开始
 
 ### 安装依赖
@@ -37,6 +50,16 @@ aiNote/
 │   │   ├── Sidebar.tsx      # 侧边栏
 │   │   ├── EditorPanel.tsx  # 编辑器面板
 │   │   └── SettingsPanel.tsx # 设置面板
+│   ├── i18n/                # 国际化
+│   │   ├── index.ts         # i18n 配置
+│   │   └── locales/         # 翻译文件
+│   │       ├── zh.json      # 简体中文
+│   │       ├── en.json      # English
+│   │       ├── ja.json      # 日本語
+│   │       ├── ko.json      # 한국어
+│   │       ├── es.json      # Español
+│   │       ├── fr.json      # Français
+│   │       └── de.json      # Deutsch
 │   ├── services/            # 服务层
 │   │   ├── ai/             # AI Provider
 │   │   ├── ContextManager.ts # 上下文管理
@@ -52,6 +75,18 @@ aiNote/
 │       └── models.rs      # 数据模型
 └── .kiro/specs/           # 设计文档
 ```
+
+## ✨ 主要特性
+
+- 📝 **富文本编辑器** - 基于 TipTap 的强大编辑器
+- 🤖 **AI 集成** - 支持 Poe 和 Ollama
+- 🗂️ **文件夹管理** - 层级文件夹组织
+- 🏷️ **标签系统** - 灵活的标签管理
+- ✅ **待办事项** - 内置任务管理
+- 🎙️ **语音输入** - 语音转文字功能
+- 🌍 **多语言** - 支持 7 种语言
+- 💾 **自动备份** - 数据安全保障
+- 🎨 **主题切换** - 明暗主题
 
 ## 📄 许可证
 

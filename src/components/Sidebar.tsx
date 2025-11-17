@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { Folder, Document } from '../types';
 import { GlobalSearch } from './GlobalSearch';
@@ -27,6 +28,7 @@ interface TreeItemProps {
 }
 
 const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = false, isSearching = false }) => {
+  const { t } = useTranslation();
   const {
     folders,
     expandedFolders,
@@ -84,7 +86,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
   };
 
   const handleCreateDocument = async () => {
-    const title = `新文档 ${new Date().toLocaleString('zh-CN')}`;
+    const title = `${t('editor.newDocumentTitle')} ${new Date().toLocaleString()}`;
     await createDocument(title, folderId);
   };
 
@@ -115,11 +117,11 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
   };
 
   const formatDate = (timestamp: number) => {
-    if (!timestamp || timestamp === 0) return '刚刚';
+    if (!timestamp || timestamp === 0) return t('sidebar.justNow');
     const ms = timestamp < 10000000000 ? timestamp * 1000 : timestamp;
     const date = new Date(ms);
-    if (isNaN(date.getTime())) return '刚刚';
-    return date.toLocaleString('zh-CN', {
+    if (isNaN(date.getTime())) return t('sidebar.justNow');
+    return date.toLocaleString(undefined, {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -181,7 +183,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                 <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
               </svg>
               <span className="flex-1 text-sm font-medium truncate text-[var(--text-primary)]">
-                {isRoot ? 'Root' : folder?.name}
+                {isRoot ? t('sidebar.root') : folder?.name}
               </span>
               
               {/* 文件夹操作按钮 */}
@@ -192,7 +194,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                     handleCreateDocument();
                   }}
                   className="p-1 text-[var(--accent-primary)] hover:bg-[var(--accent-light)] rounded transition-colors"
-                  title="新建文档"
+                  title={t('sidebar.newDocument')}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -204,7 +206,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                     setShowNewFolder(true);
                   }}
                   className="p-1 text-emerald-500 hover:bg-emerald-50 rounded transition-colors"
-                  title="新建子文件夹"
+                  title={t('sidebar.newFolder')}
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -219,7 +221,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                         setEditingName(folder.name);
                       }}
                       className="p-1 text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] rounded transition-colors"
-                      title="重命名"
+                      title={t('sidebar.rename')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -231,7 +233,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                         setShowDeleteConfirm(folder.id);
                       }}
                       className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
-                      title="删除文件夹"
+                      title={t('sidebar.delete')}
                     >
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -268,7 +270,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                 setShowNewFolder(false);
               }
             }}
-            placeholder="文件夹名称"
+            placeholder={t('sidebar.folderName')}
             className="flex-1 px-3 py-1.5 text-sm bg-[var(--bg-primary)] border border-[var(--accent-primary)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] shadow-sm"
             autoFocus
           />
@@ -285,14 +287,14 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-[var(--text-primary)]">确定删除吗？</p>
+              <p className="text-sm font-medium text-[var(--text-primary)]">{t('sidebar.confirmDelete')}</p>
             </div>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(null)}
                 className="px-4 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-lg text-sm hover:bg-[var(--bg-hover)] transition-all font-medium"
               >
-                取消
+                {t('sidebar.cancel')}
               </button>
               <button
                 onClick={() => {
@@ -304,7 +306,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                 }}
                 className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition-all font-medium shadow-sm hover:shadow"
               >
-                删除
+                {t('sidebar.deleteBtn')}
               </button>
             </div>
           </div>
@@ -321,7 +323,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
               </div>
-              <p className="text-sm font-medium text-[var(--text-primary)]">移动文档到</p>
+              <p className="text-sm font-medium text-[var(--text-primary)]">{t('sidebar.moveDocument')}</p>
             </div>
             
             <div className="max-h-96 overflow-y-auto mb-4 space-y-1">
@@ -336,7 +338,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                 <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
                 </svg>
-                <span className="text-sm">根目录</span>
+                <span className="text-sm">{t('sidebar.root')}</span>
               </button>
               
               {/* 文件夹列表 */}
@@ -363,7 +365,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                 onClick={() => setShowMoveDialog(null)}
                 className="px-4 py-2 bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-lg text-sm hover:bg-[var(--bg-hover)] transition-all font-medium"
               >
-                取消
+                {t('sidebar.cancel')}
               </button>
             </div>
           </div>
@@ -446,7 +448,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                         ? 'text-amber-500 bg-amber-50' 
                         : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-tertiary)]'
                     }`}
-                    title={doc.isPinned ? '取消置顶' : '置顶'}
+                    title={doc.isPinned ? t('sidebar.unpin') : t('sidebar.pin')}
                   >
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -462,7 +464,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                         ? 'text-red-500 bg-red-50' 
                         : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-tertiary)]'
                     }`}
-                    title={doc.isImportant ? '取消重要' : '标记重要'}
+                    title={doc.isImportant ? t('sidebar.unimportant') : t('sidebar.important')}
                   >
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -474,7 +476,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                       setShowMoveDialog(doc.id);
                     }}
                     className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-all"
-                    title="移动到文件夹"
+                    title={t('sidebar.moveTo')}
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -486,7 +488,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
                       setShowDeleteConfirm(doc.id);
                     }}
                     className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                    title="删除文档"
+                    title={t('sidebar.deleteDocument')}
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -503,6 +505,7 @@ const TreeItem: React.FC<TreeItemProps> = ({ folder, documents, level, isRoot = 
 };
 
 export const Sidebar: React.FC = () => {
+  const { t } = useTranslation();
   const { documents, collapseAllFolders, expandAllFolders, navigateToCurrentDocument } = useAppStore();
 
   return (
@@ -515,7 +518,7 @@ export const Sidebar: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">AI 笔记</h1>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('app.title')}</h1>
         </div>
 
         {/* Global Search */}
@@ -531,28 +534,28 @@ export const Sidebar: React.FC = () => {
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
-            <span>折叠</span>
+            <span>{t('sidebar.collapse')}</span>
           </button>
           <button
             onClick={expandAllFolders}
             className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-all flex items-center justify-center gap-1.5"
-            title="全部展开"
+            title={t('sidebar.expand')}
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
             </svg>
-            <span>展开</span>
+            <span>{t('sidebar.expand')}</span>
           </button>
           <button
             onClick={navigateToCurrentDocument}
             className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-all flex items-center justify-center gap-1.5"
-            title="定位到当前文档"
+            title={t('sidebar.locate')}
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <span>定位</span>
+            <span>{t('sidebar.locate')}</span>
           </button>
         </div>
       </div>

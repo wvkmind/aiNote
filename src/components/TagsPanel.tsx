@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 
 export const TagsPanel: React.FC = () => {
+  const { t } = useTranslation();
   const { tags, deleteTag, updateTag, toggleTags } = useAppStore();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
@@ -22,11 +24,11 @@ export const TagsPanel: React.FC = () => {
   const handleDelete = async (id: string) => {
     // 使用 Tauri 对话框
     const { ask } = await import('@tauri-apps/plugin-dialog');
-    const confirmed = await ask('确定要删除这个标签吗？', {
-      title: '删除标签',
+    const confirmed = await ask(t('tags.confirmDelete'), {
+      title: t('tags.deleteTitle'),
       kind: 'warning',
-      okLabel: '删除',
-      cancelLabel: '取消',
+      okLabel: t('tags.deleteLabel'),
+      cancelLabel: t('tags.cancelLabel'),
     });
     
     if (confirmed) {
@@ -75,7 +77,7 @@ export const TagsPanel: React.FC = () => {
       {/* Header */}
       <div className="p-4 border-b border-[var(--border-color)] space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">标签</h2>
+          <h2 className="text-lg font-semibold">{t('tags.title')}</h2>
           <button
             onClick={toggleTags}
             className="text-2xl hover:bg-[var(--bg-tertiary)] rounded p-1"
@@ -90,7 +92,7 @@ export const TagsPanel: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="搜索标签..."
+            placeholder={t('tags.searchPlaceholder')}
             className="w-full px-3 py-2 pl-9 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]">
@@ -100,7 +102,7 @@ export const TagsPanel: React.FC = () => {
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-1"
-              title="清除搜索"
+              title={t('tags.clearSearch')}
             >
               ×
             </button>
@@ -112,13 +114,13 @@ export const TagsPanel: React.FC = () => {
       <div className="flex-1 overflow-y-auto p-4">
         {tags.length === 0 ? (
           <div className="text-center text-[var(--text-secondary)] py-8">
-            <p>暂无标签</p>
-            <p className="text-sm mt-2">选中文字后可以添加标签</p>
+            <p>{t('tags.noTags')}</p>
+            <p className="text-sm mt-2">{t('tags.noTagsHint')}</p>
           </div>
         ) : filteredTags.length === 0 ? (
           <div className="text-center text-[var(--text-secondary)] py-8">
-            <p>未找到匹配的标签</p>
-            <p className="text-sm mt-2">尝试其他搜索词</p>
+            <p>{t('tags.noResults')}</p>
+            <p className="text-sm mt-2">{t('tags.noResultsHint')}</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -149,13 +151,13 @@ export const TagsPanel: React.FC = () => {
                         onClick={() => handleSave(tag.id)}
                         className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                       >
-                        保存
+                        {t('tags.save')}
                       </button>
                       <button
                         onClick={() => setEditingId(null)}
                         className="px-2 py-1 text-sm bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
                       >
-                        取消
+                        {t('tags.cancel')}
                       </button>
                     </div>
                   </div>
@@ -177,7 +179,7 @@ export const TagsPanel: React.FC = () => {
                             handleEdit(tag.id, tag.text);
                           }}
                           className="p-1 hover:bg-[var(--bg-tertiary)] rounded text-sm"
-                          title="编辑"
+                          title={t('tags.edit')}
                         >
                           ✏️
                         </button>
@@ -187,7 +189,7 @@ export const TagsPanel: React.FC = () => {
                             handleDelete(tag.id);
                           }}
                           className="p-1 hover:bg-[var(--bg-tertiary)] rounded text-sm"
-                          title="删除"
+                          title={t('tags.delete')}
                         >
                           🗑️
                         </button>

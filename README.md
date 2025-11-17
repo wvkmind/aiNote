@@ -7,7 +7,7 @@
 ### 安装依赖
 
 ```bash
-cd ai-note-system
+cd aiNote
 npm install
 ```
 
@@ -29,7 +29,7 @@ npm run tauri build
 ## 📁 项目结构
 
 ```
-ai-note-system/
+aiNote/
 ├── src/                      # 前端源代码
 │   ├── components/           # React 组件
 │   │   ├── editor/          # 编辑器相关组件

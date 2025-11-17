@@ -1,5 +1,7 @@
 # AI 笔记系统
 
+[English](./README_EN.md) | 简体中文
+
 一个本地优先的笔记软件，集成 Poe API 和 Ollama，支持与 AI 边聊天边写笔记。
 
 ## 🌍 多语言支持

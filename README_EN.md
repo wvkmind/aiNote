@@ -1,5 +1,7 @@
 # AI Notes System
 
+English | [简体中文](./README.md)
+
 A local-first note-taking application integrated with Poe API and Ollama, supporting AI-assisted writing.
 
 ## 🌍 Multi-language Support

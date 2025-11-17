@@ -1,6 +1,6 @@
 # AI 笔记系统
 
-一个本地优先的 Notion 风格笔记软件，集成 Poe API 和 Ollama，支持与 AI 边聊天边写笔记。
+一个本地优先的笔记软件，集成 Poe API 和 Ollama，支持与 AI 边聊天边写笔记。
 
 ## ✨ 核心特性
 

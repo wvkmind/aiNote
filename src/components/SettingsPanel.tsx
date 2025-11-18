@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
+import { CustomModelConfig } from './CustomModelConfig';
+import { CustomModel } from '../types';
 
 export const SettingsPanel: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -299,6 +301,15 @@ export const SettingsPanel: React.FC = () => {
               <option value="qwen2.5:7b">🎯 qwen2.5:7b</option>
               <option value="llama3.1:8b">🦙 llama3.1:8b</option>
             </optgroup>
+            {localSettings.customModels && localSettings.customModels.length > 0 && (
+              <optgroup label="🔧 自定义模型">
+                {localSettings.customModels.map((model) => (
+                  <option key={model.id} value={model.name}>
+                    {model.name} ({model.provider} - {(model.maxTokens / 1000).toFixed(0)}k)
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </select>
           <p className="text-xs text-[var(--text-tertiary)] mt-3 flex items-center gap-1">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
@@ -307,6 +318,40 @@ export const SettingsPanel: React.FC = () => {
             上下文长度显示在状态栏
           </p>
         </div>
+
+        {/* Custom Models Configuration */}
+        <CustomModelConfig
+          models={localSettings.customModels || []}
+          onAdd={(model) => {
+            const newModel: CustomModel = {
+              ...model,
+              id: `custom_${Date.now()}`,
+            };
+            setLocalSettings({
+              ...localSettings,
+              customModels: [...(localSettings.customModels || []), newModel],
+            });
+          }}
+          onDelete={(id) => {
+            setLocalSettings({
+              ...localSettings,
+              customModels: (localSettings.customModels || []).filter((m) => m.id !== id),
+            });
+          }}
+          onSetDefault={(id) => {
+            const model = localSettings.customModels?.find((m) => m.id === id);
+            if (model) {
+              setLocalSettings({
+                ...localSettings,
+                defaultModel: model.name,
+                customModels: (localSettings.customModels || []).map((m) => ({
+                  ...m,
+                  isDefault: m.id === id,
+                })),
+              });
+            }
+          }}
+        />
 
         {/* Theme & Auto Save */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

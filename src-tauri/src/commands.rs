@@ -75,12 +75,27 @@ fn get_settings_sync(app: &AppHandle) -> Result<Settings, String> {
             }
         };
         
+        let custom_models_result: Result<Vec<crate::models::CustomModel>, _> = 
+            serde_json::from_value(value["custom_models"].clone());
+        
+        let custom_models = match custom_models_result {
+            Ok(models) => {
+                println!("✅ Parsed {} custom models", models.len());
+                Some(models)
+            },
+            Err(_) => {
+                println!("⚠️ No custom models found, using empty list");
+                Some(vec![])
+            }
+        };
+        
         let settings = Settings {
             ai_providers,
             default_provider: value["default_provider"].as_str()
                 .unwrap_or("poe").to_string(),
             default_model: value["default_model"].as_str()
                 .unwrap_or("Claude-Sonnet-4.5").to_string(),
+            custom_models,
             theme: value["theme"].as_str()
                 .unwrap_or("light").to_string(),
             auto_save: value["auto_save"].as_bool()

@@ -47,6 +47,7 @@ export const useAppStore = create<AppState>()(
       ],
       defaultProvider: 'poe',
       defaultModel: 'Claude-Sonnet-4.5',
+      customModels: [],
       theme: 'light',
       autoSave: true,
       autoSaveDelay: 2000,

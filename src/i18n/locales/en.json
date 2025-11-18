@@ -83,7 +83,19 @@
     "resetFailed": "Reset failed: {error}",
     "defaultPathResult": "Default path:\n{path}",
     "currentPathResult": "Current path:\n{path}",
-    "getPathFailed": "Failed to get path: {error}"
+    "getPathFailed": "Failed to get path: {error}",
+    "customModels": "Custom Models",
+    "addModel": "Add Model",
+    "modelName": "Model Name",
+    "modelNamePlaceholder": "e.g., llama3.2:3b",
+    "modelNameRequired": "Model name is required",
+    "provider": "Provider",
+    "maxTokens": "Max Tokens",
+    "noCustomModels": "No custom models yet",
+    "default": "Default",
+    "setAsDefault": "Set as default model",
+    "setDefault": "Set Default",
+    "confirmDeleteModel": "Are you sure you want to delete model '{name}'?"
   },
   "editor": {
     "newDocumentTitle": "New Document",

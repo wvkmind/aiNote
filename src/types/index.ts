@@ -60,6 +60,15 @@ export interface AIBlockAttrs {
   timestamp: number;
 }
 
+// 自定义模型配置
+export interface CustomModel {
+  id: string;
+  name: string;
+  provider: 'poe' | 'ollama';
+  maxTokens: number;
+  isDefault?: boolean;
+}
+
 // AI Provider 配置
 export interface AIProviderConfig {
   type: 'poe' | 'ollama';
@@ -76,6 +85,7 @@ export interface Settings {
   aiProviders: AIProviderConfig[];
   defaultProvider: 'poe' | 'ollama';
   defaultModel: string;
+  customModels?: CustomModel[];
   
   // UI 配置
   theme: 'light' | 'dark';

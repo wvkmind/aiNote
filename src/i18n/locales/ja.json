@@ -74,7 +74,19 @@
     "resetFailed": "リセットに失敗しました：{error}",
     "defaultPathResult": "デフォルトパス：\n{path}",
     "currentPathResult": "現在のパス：\n{path}",
-    "getPathFailed": "パスの取得に失敗しました：{error}"
+    "getPathFailed": "パスの取得に失敗しました：{error}",
+    "customModels": "カスタムモデル",
+    "addModel": "モデルを追加",
+    "modelName": "モデル名",
+    "modelNamePlaceholder": "例：llama3.2:3b",
+    "modelNameRequired": "モデル名は必須です",
+    "provider": "プロバイダー",
+    "maxTokens": "最大トークン数",
+    "noCustomModels": "カスタムモデルがありません",
+    "default": "デフォルト",
+    "setAsDefault": "デフォルトモデルに設定",
+    "setDefault": "デフォルトに設定",
+    "confirmDeleteModel": "モデル '{name}' を削除してもよろしいですか？"
   },
   "editor": {
     "newDocumentTitle": "新規ドキュメント",

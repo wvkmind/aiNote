@@ -49,10 +49,20 @@ pub struct Tag {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct CustomModel {
+    pub id: String,
+    pub name: String,
+    pub provider: String,
+    pub max_tokens: i32,
+    pub is_default: Option<bool>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Settings {
     pub ai_providers: Vec<AIProviderConfig>,
     pub default_provider: String,
     pub default_model: String,
+    pub custom_models: Option<Vec<CustomModel>>,
     pub theme: String,
     pub auto_save: bool,
     pub auto_save_delay: i32,
@@ -86,6 +96,7 @@ impl Default for Settings {
             ],
             default_provider: "poe".to_string(),
             default_model: "Claude-Sonnet-4.5".to_string(),
+            custom_models: Some(vec![]),
             theme: "light".to_string(),
             auto_save: true,
             auto_save_delay: 2000,

@@ -74,7 +74,19 @@
     "resetFailed": "Falló el restablecimiento: {error}",
     "defaultPathResult": "Ruta predeterminada:\n{path}",
     "currentPathResult": "Ruta actual:\n{path}",
-    "getPathFailed": "Error al obtener la ruta: {error}"
+    "getPathFailed": "Error al obtener la ruta: {error}",
+    "customModels": "Modelos personalizados",
+    "addModel": "Agregar modelo",
+    "modelName": "Nombre del modelo",
+    "modelNamePlaceholder": "ej.: llama3.2:3b",
+    "modelNameRequired": "El nombre del modelo es obligatorio",
+    "provider": "Proveedor",
+    "maxTokens": "Tokens máximos",
+    "noCustomModels": "No hay modelos personalizados",
+    "default": "Predeterminado",
+    "setAsDefault": "Establecer como modelo predeterminado",
+    "setDefault": "Establecer predeterminado",
+    "confirmDeleteModel": "¿Está seguro de que desea eliminar el modelo '{name}'?"
   },
   "editor": {
     "newDocumentTitle": "Nuevo Documento",

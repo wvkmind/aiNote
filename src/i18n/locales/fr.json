@@ -74,7 +74,19 @@
     "resetFailed": "Échec de la réinitialisation: {error}",
     "defaultPathResult": "Chemin par défaut:\n{path}",
     "currentPathResult": "Chemin actuel:\n{path}",
-    "getPathFailed": "Échec de l'obtention du chemin: {error}"
+    "getPathFailed": "Échec de l'obtention du chemin: {error}",
+    "customModels": "Modèles personnalisés",
+    "addModel": "Ajouter un modèle",
+    "modelName": "Nom du modèle",
+    "modelNamePlaceholder": "ex: llama3.2:3b",
+    "modelNameRequired": "Le nom du modèle est requis",
+    "provider": "Fournisseur",
+    "maxTokens": "Tokens max",
+    "noCustomModels": "Aucun modèle personnalisé",
+    "default": "Par défaut",
+    "setAsDefault": "Définir comme modèle par défaut",
+    "setDefault": "Définir par défaut",
+    "confirmDeleteModel": "Êtes-vous sûr de vouloir supprimer le modèle '{name}' ?"
   },
   "editor": {
     "newDocumentTitle": "Nouveau Document",

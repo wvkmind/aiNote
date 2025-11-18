@@ -74,7 +74,19 @@
     "resetFailed": "Zurücksetzen fehlgeschlagen: {error}",
     "defaultPathResult": "Standardpfad:\n{path}",
     "currentPathResult": "Aktueller Pfad:\n{path}",
-    "getPathFailed": "Fehler beim Abrufen des Pfads: {error}"
+    "getPathFailed": "Fehler beim Abrufen des Pfads: {error}",
+    "customModels": "Benutzerdefinierte Modelle",
+    "addModel": "Modell hinzufügen",
+    "modelName": "Modellname",
+    "modelNamePlaceholder": "z.B.: llama3.2:3b",
+    "modelNameRequired": "Modellname ist erforderlich",
+    "provider": "Anbieter",
+    "maxTokens": "Max. Tokens",
+    "noCustomModels": "Keine benutzerdefinierten Modelle",
+    "default": "Standard",
+    "setAsDefault": "Als Standardmodell festlegen",
+    "setDefault": "Als Standard",
+    "confirmDeleteModel": "Möchten Sie das Modell '{name}' wirklich löschen?"
   },
   "editor": {
     "newDocumentTitle": "Neues Dokument",

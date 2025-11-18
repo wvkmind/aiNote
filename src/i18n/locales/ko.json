@@ -74,7 +74,19 @@
     "resetFailed": "재설정 실패: {error}",
     "defaultPathResult": "기본 경로:\n{path}",
     "currentPathResult": "현재 경로:\n{path}",
-    "getPathFailed": "경로 가져오기 실패: {error}"
+    "getPathFailed": "경로 가져오기 실패: {error}",
+    "customModels": "사용자 정의 모델",
+    "addModel": "모델 추가",
+    "modelName": "모델 이름",
+    "modelNamePlaceholder": "예: llama3.2:3b",
+    "modelNameRequired": "모델 이름은 필수입니다",
+    "provider": "제공자",
+    "maxTokens": "최대 토큰",
+    "noCustomModels": "사용자 정의 모델이 없습니다",
+    "default": "기본값",
+    "setAsDefault": "기본 모델로 설정",
+    "setDefault": "기본값 설정",
+    "confirmDeleteModel": "모델 '{name}'을(를) 삭제하시겠습니까?"
   },
   "editor": {
     "newDocumentTitle": "새 문서",
